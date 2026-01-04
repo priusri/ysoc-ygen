@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback Survey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #06b6d4;
+        }
+
+        select {
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .radio-group,
+        .checkbox-group {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .radio-option,
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .radio-option label,
+        .checkbox-option label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="submit"] {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Customer Feedback Survey</h1>
+        <p>Help us improve our service by sharing your thoughts</p>
+
+        <form>
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age" min="1" max="120">
+
+            <label for="country">Country <span class="required">*</span></label>
+            <select id="country" name="country" required>
+                <option value="">-- Select your country --</option>
+                <option value="usa">United States</option>
+                <option value="canada">Canada</option>
+                <option value="uk">United Kingdom</option>
+                <option value="australia">Australia</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label>How satisfied are you with our service? <span class="required">*</span></label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="very-satisfied" name="satisfaction" value="very-satisfied" required>
+                    <label for="very-satisfied">Very Satisfied</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="satisfied" name="satisfaction" value="satisfied">
+                    <label for="satisfied">Satisfied</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="neutral" name="satisfaction" value="neutral">
+                    <label for="neutral">Neutral</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="dissatisfied" name="satisfaction" value="dissatisfied">
+                    <label for="dissatisfied">Dissatisfied</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="very-dissatisfied" name="satisfaction" value="very-dissatisfied">
+                    <label for="very-dissatisfied">Very Dissatisfied</label>
+                </div>
+            </div>
+
+            <label>Which features do you use? (Select all that apply)</label>
+            <div class="checkbox-group">
+                <div class="checkbox-option">
+                    <input type="checkbox" id="feature1" name="features" value="mobile-app">
+                    <label for="feature1">Mobile App</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="feature2" name="features" value="web-portal">
+                    <label for="feature2">Web Portal</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="feature3" name="features" value="email-support">
+                    <label for="feature3">Email Support</label>
+                </div>
+                <div class="checkbox-option">
+                    <input type="checkbox" id="feature4" name="features" value="chat-support">
+                    <label for="feature4">Chat Support</label>
+                </div>
+            </div>
+
+            <label for="comments">Additional Comments</label>
+            <textarea id="comments" name="comments" placeholder="Share any additional feedback or suggestions..."></textarea>
+
+            <input type="submit" value="Submit Survey">
+        </form>
+    </div>
+</body>
+</html>
