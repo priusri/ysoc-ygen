@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .deck-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .suit-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            width: 120px;
+            height: 170px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .card-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            transform: rotate(180deg);
+        }
+
+        .card-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .card-suit {
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        .card-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .card-center .card-suit {
+            font-size: 3em;
+        }
+
+        /* Suit colors */
+        .hearts, .diamonds {
+            color: #e74c3c;
+        }
+
+        .clubs, .spades {
+            color: #2c3e50;
+        }
+
+        .suit-label {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="header">
+            <h1>♠ Playing Cards ♥</h1>
+            <p>Hover over the cards to interact</p>
+        </div>
+
+        <div class="deck-container">
+            <!-- Hearts Section -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="suit-label">♥ Hearts</span>
+                </div>
+                <div class="suit-row" id="hearts-row">
+                    <div class="card hearts">
+                        <div class="card-top">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                    </div>
+
+                    <div class="card hearts">
+                        <div class="card-top">
+                            <span class="card-value">K</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">K</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                    </div>
+
+                    <div class="card hearts">
+                        <div class="card-top">
+                            <span class="card-value">Q</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">Q</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                    </div>
+
+                    <div class="card hearts">
+                        <div class="card-top">
+                            <span class="card-value">J</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♥</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">J</span>
+                            <span class="card-suit">♥</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diamonds Section -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="suit-label">♦ Diamonds</span>
+                </div>
+                <div class="suit-row" id="diamonds-row">
+                    <div class="card diamonds">
+                        <div class="card-top">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                    </div>
+
+                    <div class="card diamonds">
+                        <div class="card-top">
+                            <span class="card-value">10</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">10</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                    </div>
+
+                    <div class="card diamonds">
+                        <div class="card-top">
+                            <span class="card-value">9</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">9</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                    </div>
+
+                    <div class="card diamonds">
+                        <div class="card-top">
+                            <span class="card-value">8</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♦</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">8</span>
+                            <span class="card-suit">♦</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clubs Section -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="suit-label">♣ Clubs</span>
+                </div>
+                <div class="suit-row" id="clubs-row">
+                    <div class="card clubs">
+                        <div class="card-top">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                    </div>
+
+                    <div class="card clubs">
+                        <div class="card-top">
+                            <span class="card-value">7</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">7</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                    </div>
+
+                    <div class="card clubs">
+                        <div class="card-top">
+                            <span class="card-value">6</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">6</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                    </div>
+
+                    <div class="card clubs">
+                        <div class="card-top">
+                            <span class="card-value">5</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♣</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">5</span>
+                            <span class="card-suit">♣</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spades Section -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="suit-label">♠ Spades</span>
+                </div>
+                <div class="suit-row" id="spades-row">
+                    <div class="card spades">
+                        <div class="card-top">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">A</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                    </div>
+
+                    <div class="card spades">
+                        <div class="card-top">
+                            <span class="card-value">4</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">4</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                    </div>
+
+                    <div class="card spades">
+                        <div class="card-top">
+                            <span class="card-value">3</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">3</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                    </div>
+
+                    <div class="card spades">
+                        <div class="card-top">
+                            <span class="card-value">2</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-center">
+                            <span class="card-suit">♠</span>
+                        </div>
+                        <div class="card-bottom">
+                            <span class="card-value">2</span>
+                            <span class="card-suit">♠</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
