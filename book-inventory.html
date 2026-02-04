@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Inventory Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 
+                        0 0 0 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: -1px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.15em;
+            font-weight: 300;
+            animation: fadeInDown 0.8s ease-out 0.2s backwards;
+        }
+
+        /* Legend showing inventory status */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .legend-item {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-item:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Attribute selector: exact match */
+        [class="legend-item in-stock"] {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        /* Attribute selector: exact match */
+        [class="legend-item low-stock"] {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        /* Attribute selector: exact match */
+        [class="legend-item out-of-stock"] {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        /* Attribute selector: starts with */
+        [class^="legend-item pre"] {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border: 2px solid #17a2b8;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            animation: fadeIn 0.8s ease-out 0.6s backwards;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        tbody tr::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        tbody tr:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* nth-child selectors for alternating row colors */
+        tbody tr:nth-child(odd) {
+            background: #fafafa;
+        }
+
+        tbody tr:nth-child(even) {
+            background: white;
+        }
+
+        /* nth-child selector: every 3rd row gets special styling */
+        tbody tr:nth-child(3n) {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
+        }
+
+        /* Status badges using classes */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: default;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-badge.in-stock {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 2px solid #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+        }
+
+        .status-badge.low-stock {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+            border: 2px solid #ffc107;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .status-badge.out-of-stock {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 2px solid #dc3545;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+        }
+
+        .status-badge.pre-order {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border: 2px solid #17a2b8;
+            box-shadow: 0 2px 8px rgba(23, 162, 184, 0.2);
+        }
+
+        /* Category badges with different styles */
+        .category {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Attribute selector for category classes */
+        [class*="category"] {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .category.fiction {
+            background: linear-gradient(135deg, #e7f3ff 0%, #cfe2ff 100%);
+            color: #004085;
+            border: 1px solid #b6d4fe;
+        }
+
+        .category.non-fiction {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe5b4 100%);
+            color: #856404;
+            border: 1px solid #ffd67f;
+        }
+
+        .category.science {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #1b5e20;
+            border: 1px solid #a5d6a7;
+        }
+
+        .category.technology {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            color: #4a148c;
+            border: 1px solid #ce93d8;
+        }
+
+        .category.history {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #e65100;
+            border: 1px solid #ffcc80;
+        }
+
+        /* Price styling */
+        .price {
+            font-weight: 700;
+            color: #28a745;
+            font-size: 1.15em;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stock quantity with color coding */
+        .quantity {
+            font-weight: 700;
+            text-align: center;
+            display: inline-block;
+            min-width: 45px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+            font-size: 1.1em;
+        }
+
+        /* Summary section at the bottom */
+        .summary {
+            margin-top: 50px;
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out 0.8s backwards;
+        }
+
+        .summary h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-card {
+            display: inline-block;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            min-width: 160px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+        }
+
+        .stat-card h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.95em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Book Inventory Management</h1>
+        <p class="subtitle">✨ Track and manage your bookstore inventory with style ✨</p>
+
+        <!-- Legend showing different statuses -->
+        <div class="legend">
+            <span class="legend-item in-stock">✓ In Stock</span>
+            <span class="legend-item low-stock">⚠ Low Stock</span>
+            <span class="legend-item out-of-stock">✗ Out of Stock</span>
+            <span class="legend-item pre-order">⏰ Pre-Order</span>
+        </div>
+
+        <!-- Main inventory table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>📖 ISBN</th>
+                    <th>📕 Title</th>
+                    <th>✍️ Author</th>
+                    <th>🏷️ Category</th>
+                    <th>💰 Price</th>
+                    <th>📊 Quantity</th>
+                    <th>🔔 Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>978-0-13-468599-1</td>
+                    <td>The Pragmatic Programmer</td>
+                    <td>Andrew Hunt</td>
+                    <td><span class="category technology">Technology</span></td>
+                    <td><span class="price">$49.99</span></td>
+                    <td><span class="quantity">45</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-54-492653-6</td>
+                    <td>To Kill a Mockingbird</td>
+                    <td>Harper Lee</td>
+                    <td><span class="category fiction">Fiction</span></td>
+                    <td><span class="price">$14.99</span></td>
+                    <td><span class="quantity">8</span></td>
+                    <td><span class="status-badge low-stock">Low Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-59-651634-2</td>
+                    <td>Sapiens</td>
+                    <td>Yuval Noah Harari</td>
+                    <td><span class="category history">History</span></td>
+                    <td><span class="price">$24.99</span></td>
+                    <td><span class="quantity">32</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-1-50-112147-4</td>
+                    <td>Educated</td>
+                    <td>Tara Westover</td>
+                    <td><span class="category non-fiction">Non-Fiction</span></td>
+                    <td><span class="price">$18.99</span></td>
+                    <td><span class="quantity">0</span></td>
+                    <td><span class="status-badge out-of-stock">Out of Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-13-110362-7</td>
+                    <td>Clean Code</td>
+                    <td>Robert C. Martin</td>
+                    <td><span class="category technology">Technology</span></td>
+                    <td><span class="price">$44.99</span></td>
+                    <td><span class="quantity">28</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-14-118280-3</td>
+                    <td>1984</td>
+                    <td>George Orwell</td>
+                    <td><span class="category fiction">Fiction</span></td>
+                    <td><span class="price">$13.99</span></td>
+                    <td><span class="quantity">5</span></td>
+                    <td><span class="status-badge low-stock">Low Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-13-235088-4</td>
+                    <td>A Brief History of Time</td>
+                    <td>Stephen Hawking</td>
+                    <td><span class="category science">Science</span></td>
+                    <td><span class="price">$17.99</span></td>
+                    <td><span class="quantity">15</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-73-521142-9</td>
+                    <td>Atomic Habits</td>
+                    <td>James Clear</td>
+                    <td><span class="category non-fiction">Non-Fiction</span></td>
+                    <td><span class="price">$27.99</span></td>
+                    <td><span class="quantity">52</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-1-61-729655-0</td>
+                    <td>The Silent Patient</td>
+                    <td>Alex Michaelides</td>
+                    <td><span class="category fiction">Fiction</span></td>
+                    <td><span class="price">$16.99</span></td>
+                    <td><span class="quantity">0</span></td>
+                    <td><span class="status-badge pre-order">Pre-Order</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-59-635276-2</td>
+                    <td>The Innovators</td>
+                    <td>Walter Isaacson</td>
+                    <td><span class="category technology">Technology</span></td>
+                    <td><span class="price">$22.99</span></td>
+                    <td><span class="quantity">19</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-76-532331-3</td>
+                    <td>The Gene</td>
+                    <td>Siddhartha Mukherjee</td>
+                    <td><span class="category science">Science</span></td>
+                    <td><span class="price">$19.99</span></td>
+                    <td><span class="quantity">7</span></td>
+                    <td><span class="status-badge low-stock">Low Stock</span></td>
+                </tr>
+                <tr>
+                    <td>978-0-14-313770-4</td>
+                    <td>Thinking, Fast and Slow</td>
+                    <td>Daniel Kahneman</td>
+                    <td><span class="category non-fiction">Non-Fiction</span></td>
+                    <td><span class="price">$20.99</span></td>
+                    <td><span class="quantity">34</span></td>
+                    <td><span class="status-badge in-stock">In Stock</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Summary statistics -->
+        <div class="summary">
+            <h2>📈 Inventory Summary</h2>
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <h3>12</h3>
+                    <p>📚 Total Titles</p>
+                </div>
+                <div class="stat-card">
+                    <h3>274</h3>
+                    <p>📖 Total Books</p>
+                </div>
+                <div class="stat-card">
+                    <h3>7</h3>
+                    <p>✅ In Stock</p>
+                </div>
+                <div class="stat-card">
+                    <h3>3</h3>
+                    <p>⚠️ Low Stock</p>
+                </div>
+                <div class="stat-card">
+                    <h3>1</h3>
+                    <p>❌ Out of Stock</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
