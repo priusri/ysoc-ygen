@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Technical Documentation</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f5f7fa;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+}
+
+nav {
+    position: fixed;
+    height: 100vh;
+    width: 260px;
+    background: linear-gradient(180deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 20px;
+}
+
+nav h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+main {
+    margin-left: 280px;
+    padding: 40px;
+    width: 100%;
+}
+
+section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+section header h2 {
+    color: #2a5298;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+}
+
+p {
+    margin: 15px 0;
+    color: #333;
+}
+
+ul {
+    margin-left: 20px;
+}
+
+li {
+    margin: 8px 0;
+}
+
+code {
+    display: block;
+    background: #eef2f7;
+    padding: 15px;
+    border-left: 5px solid #2a5298;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-family: Consolas, monospace;
+}
+
+@media (max-width: 768px) {
+    nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<nav>
+    <h1>Tech Docs</h1>
+    <a href="#intro">Introduction</a>
+    <a href="#html">HTML Concepts</a>
+    <a href="#css">CSS Concepts</a>
+</nav>
+
+<main>
+
+<section id="intro">
+    <header>
+        <h2>Introduction</h2>
+    </header>
+    <p>
+        A Technical Documentation Page presents structured information in a
+        clear and readable format. It helps users understand concepts using
+        navigation links and organized sections.
+    </p>
+</section>
+
+<section id="html">
+    <header>
+        <h2>HTML Concepts</h2>
+    </header>
+
+    <p>HTML defines the structure of a webpage.</p>
+
+    <ul>
+        <li><code>&lt;main&gt;</code> – Contains the main content</li>
+        <li><code>&lt;section&gt;</code> – Divides content into sections</li>
+        <li><code>&lt;header&gt;</code> – Section heading container</li>
+        <li><code>&lt;p&gt;</code> – Paragraph text</li>
+        <li><code>&lt;code&gt;</code> – Code snippets</li>
+        <li>IDs enable in-page navigation</li>
+    </ul>
+
+    <code>
+&lt;section id="html"&gt;
+  &lt;header&gt;
+    &lt;h2&gt;HTML Concepts&lt;/h2&gt;
+  &lt;/header&gt;
+&lt;/section&gt;
+    </code>
+</section>
+
+<section id="css">
+    <header>
+        <h2>CSS Concepts</h2>
+    </header>
+
+    <p>CSS styles the webpage and makes it responsive.</p>
+
+    <ul>
+        <li>Fixed navigation bar</li>
+        <li>Flexbox layout</li>
+        <li>Spacing and font styling</li>
+        <li>Hover effects</li>
+        <li>Media queries for responsiveness</li>
+    </ul>
+
+    <code>
+@media (max-width: 768px) {
+  nav {
+    position: relative;
+  }
+}
+    </code>
+</section>
+
+</main>
+</div>
+
+</body>
+</html>
